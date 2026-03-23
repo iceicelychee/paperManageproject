@@ -1,7 +1,7 @@
 // 导入工具包
-const express = require('express')
-const cors = require('cors')
-const db = require('./db')
+import express from 'express'
+import cors from 'cors'
+import db from './db.js'
 
 // 创建服务器/实例
 const app = express()
