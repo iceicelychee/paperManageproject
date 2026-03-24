@@ -10,14 +10,23 @@ dotenv.config()
     database: process.env.DB_NAME
 })*/
 // 优先使用 DATABASE_URL，否则使用独立的环境变量
-const db = process.env.DATABASE_URL 
-    ? mysql.createConnection(process.env.DATABASE_URL)
-    : mysql.createConnection({
+let db
+
+if (process.env.DATABASE_URL) {
+    db = mysql.createConnection({
+        uri: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: false }
+    })
+} else {
+    db = mysql.createConnection({
         host: process.env.DB_HOST,
+        port: process.env.DB_PORT || 3306,
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME
- })
+        database: process.env.DB_NAME,
+        ssl: { rejectUnauthorized: false }
+    })
+}
 
 db.connect(err => {
     if(err) {
